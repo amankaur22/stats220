@@ -1,0 +1,81 @@
+---
+title: Fast Food Advertisements seen on YouTube
+output: html_fragment
+---
+
+## Purpose of this report
+For this report I was analysing how many and what fast food advertisements are seen when watching YouTube videos. This was to see how fast food advertisements affect viewing time on YouTube. 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+body {
+font-size: 11pt;
+background-color: #ace6dd 
+}
+```
+
+## What's going on with this data?
+
+You need to change the contents of this Rmd! Replace the R code and markdown give below in this template document.
+
+```{r}
+library(tidyverse)
+csv_file <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0xvF0krdUAA6v9SBjHcSsChi7MCw4sTHrgahw0XZwAVewtZwyvyI7XBxZTUojRXN4llhH-yA9-nhL/pub?gid=1042749016&single=true&output=csv"
+
+logged_data <- read_csv(csv_file)
+
+# Renaming variables in the data frame
+latest_data <- logged_data %>%
+  rename(ad_presence = 2,
+         ad_count = 3,
+         ad_viewed = 4)
+
+# Finding out the minimum number of advertisements viewed while watching YouTube
+min_latest_data <- latest_data$ad_count %>% min()
+
+min_latest_data
+
+paste0("The minimum number of fast food advertisements seen in a session of watching YouTube was", min_latest_data, ".")
+
+# Finding out the mean of how many fast food advertisements were seen while watching YouTube
+mean_latest_data <- latest_data$ad_count %>%
+  mean() %>%
+  round(1)
+
+mean_latest_data
+
+paste0("The mean number of fast food advertisements seen in a session of watching YouTube was" , mean_latest_data, ".")
+
+# Finding out which Fast Food company's ad was viewed the most 
+max_ad_viewed <- latest_data$ad_viewed %>% min()
+
+max_ad_viewed
+
+paste0("The advertisement that was viewed the most was by ", max_ad_viewed, ".")
+
+# Finding out which Fast Food advertisement was viewed the least 
+min_ad_viewed <- latest_data$ad_viewed %>% max()
+
+min_ad_viewed
+
+paste0("The advertisement that was viewed the least was by ", min_ad_viewed, ".")
+
+# Creating a graph of how many advertisements were viewed
+latest_data  %>%
+  ggplot() +
+  geom_bar(aes(x = ad_count),
+           fill = "#6a0dad")  
+
+# Creating a graph to show how many advertisements were watched and which ones they were
+latest_data  %>%
+  ggplot() +
+  geom_bar(aes(x = ad_count, fill = ad_viewed)) +
+  labs(title = "Fast Food Advertisements on YouTube",
+       subtitle = "Seeing how many and what fast food advertisements are shown on YouTube",
+       x = "Number of each ad seen)",
+       y = "Total ads seen")
+```
+
